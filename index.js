@@ -1,24 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
-const port = process.env.PORT || 3000;
 const studentRoutes = require('./routes/student.routes');
+const authmiddleware = require('./middleware/authMiddleware');
+const authutils = require('./middleware/authUtils');
 
-app.use(bodyParser.json());
-
-app.use('/students', studentRoutes);
-
-app.listen(port, () => {
-    console.log(`Servidor corriendo en el puerto ${port}`);
+const app = express();
+app.post('/login', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (username === 'admin' && password === 'admin') {
+        const token = authutils.generateToken({id: 1, username: username});
+        res.json({token});
+    } else {
+        res.json(401).json({error: "Unauthorized"});
+    }
 });
 
-const students = [];
-//Mostrar todos los estudiantes
+app.use(bodyParser.json());
+app.use(authmiddleware);
+app.use('/students', studentRoutes);
 
+const PORT = process.env.PORT || 3000;
 
-app.get("/estudiantes", getStudents);
-app.post("/estudiantes", postStudent);
-app.get("/estudiantes/:id", getStudentById);
-app.put("/estudiantes/:id", putStudentById);
-app.delete("/estudiantes/:id", deleteStudentById);
-
+app.listen(PORT, () => {
+    console.log(`Servidor ejecutandose en el puerto ${PORT}`);
+});

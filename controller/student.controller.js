@@ -1,4 +1,28 @@
-
+const {v4: uuidv4} = require('uuid');
+const student = require('../model/student.model');
+const {json} = require("express");
+let students = [
+    {
+        id: 1,
+        name: 'Juanito',
+        grade: 30
+    },
+    {
+        id: 2,
+        name: 'Pepito',
+        grade: 40
+    },
+    {
+        id: 3,
+        name: 'Jaimito',
+        grade: 50
+    },
+    {
+        id: 4,
+        name: 'Carlitos',
+        grade: 100
+    }
+]
 function getStudents (req, res) {
     res.json(students);
 }
@@ -32,4 +56,12 @@ function deleteStudentById (req, res) {
     const index = students.findIndex((student) => student.id === id);
     students.splice(index, 1);
     res.sendStatus(204);
+}
+
+module.exports = {
+    getStudents,
+    postStudent,
+    getStudentById,
+    putStudentById,
+    deleteStudentById
 }
