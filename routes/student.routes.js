@@ -21,6 +21,13 @@ function authenticate(req, res, next) {
 
 // ----------------------- ROUTES ----------------------- //
 
+app.get("/", getStudents);
+app.post("/", postStudent);
+app.get("/:id", getStudentById);
+app.put("/:id", putStudentById);
+app.delete("/:id", deleteStudentById);
+
+
 // Get all tasks
 router.get('/', authenticate, (req, res) => {
     const students = studentController.getAllStudents();
