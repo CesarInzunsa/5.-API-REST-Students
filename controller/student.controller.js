@@ -4,22 +4,22 @@ const {json} = require("express");
 const Student = require("../model/student.model");
 let students = [
     {
-        id: 1,
+        id: "56b9cae1480b",
         name: 'Juanito',
         grade: 30
     },
     {
-        id: 2,
+        id: "b23jb2m3h2m3",
         name: 'Pepito',
         grade: 40
     },
     {
-        id: 3,
+        id: "b67l67h5lk7h",
         name: 'Jaimito',
         grade: 50
     },
     {
-        id: 4,
+        id: "c2bv4c34l3ih",
         name: 'Carlitos',
         grade: 100
     }
@@ -60,7 +60,7 @@ function getStudentById(id) {
         return {status: 400, message: "El id del estudiante es requerido"};
     }
 
-    const student = students.find((student) => student.id === parseInt(id));
+    const student = students.find((student) => student.id === id);
     return student ? {status: 200, data: student} : {status: 404, message: "Estudiante no encontrado"};
 }
 
@@ -75,7 +75,7 @@ function putStudentById(id, newDataStudent) {
         return {status: 400, message: "El id del estudiante es requerido"};
     }
 
-    const index = students.findIndex((student) => student.id === parseInt(id));
+    const index = students.findIndex((student) => student.id === id);
 
     if (index === -1) {
         return {status: 404, message: "Estudiante no encontrado"};
@@ -89,7 +89,7 @@ function putStudentById(id, newDataStudent) {
 
 //Eliminar estudiante por id
 function deleteStudentById(id) {
-    const index = students.findIndex((student) => student.id === parseInt(id));
+    const index = students.findIndex((student) => student.id === id);
 
     if (index === -1) {
         return {status: 404, message: "Estudiante no encontrado"};
