@@ -22,11 +22,7 @@ app.use('/students', studentRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-<<<<<<< HEAD
 
-
-=======
 app.listen(PORT, () => {
     console.log(`Servidor ejecutandose en el puerto ${PORT}`);
 });
->>>>>>> 0487a5c88e242cd968a8f41e8462042aaa9018f5

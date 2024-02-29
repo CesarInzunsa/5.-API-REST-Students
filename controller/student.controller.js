@@ -58,7 +58,7 @@ function deleteStudentById (req, res) {
     res.sendStatus(204);
 }
 
-<<<<<<< HEAD
+
 function topAverages (req, res) {
     const topStudents = students
         .filter(student => student.grade) // Ensure the student has a grade
@@ -72,12 +72,12 @@ function topAverages (req, res) {
     })));
 };
 
-=======
 module.exports = {
     getStudents,
     postStudent,
     getStudentById,
     putStudentById,
-    deleteStudentById
+    deleteStudentById,
+    topAverages
 }
->>>>>>> 0487a5c88e242cd968a8f41e8462042aaa9018f5
+
