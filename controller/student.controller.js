@@ -1,4 +1,28 @@
-
+const {v4: uuidv4} = require('uuid');
+const student = require('../model/student.model');
+const {json} = require("express");
+let students = [
+    {
+        id: 1,
+        name: 'Juanito',
+        grade: 30
+    },
+    {
+        id: 2,
+        name: 'Pepito',
+        grade: 40
+    },
+    {
+        id: 3,
+        name: 'Jaimito',
+        grade: 50
+    },
+    {
+        id: 4,
+        name: 'Carlitos',
+        grade: 100
+    }
+]
 function getStudents (req, res) {
     res.json(students);
 }
@@ -34,6 +58,7 @@ function deleteStudentById (req, res) {
     res.sendStatus(204);
 }
 
+<<<<<<< HEAD
 function topAverages (req, res) {
     const topStudents = students
         .filter(student => student.grade) // Ensure the student has a grade
@@ -47,3 +72,12 @@ function topAverages (req, res) {
     })));
 };
 
+=======
+module.exports = {
+    getStudents,
+    postStudent,
+    getStudentById,
+    putStudentById,
+    deleteStudentById
+}
+>>>>>>> 0487a5c88e242cd968a8f41e8462042aaa9018f5
