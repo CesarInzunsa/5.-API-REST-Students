@@ -1,6 +1,7 @@
 const {v4: uuidv4} = require('uuid');
 const student = require('../model/student.model');
 const {json} = require("express");
+const Student = require("../model/student.model");
 let students = [
     {
         id: 1,
@@ -23,54 +24,105 @@ let students = [
         grade: 100
     }
 ]
-function getStudents (req, res) {
-    res.json(students);
+
+function genID() {
+    return uuidv4().replace(/-/g, "").substring(0, 12);
+}
+
+// Obtener todos los estudiantes
+function getStudents() {
+    if (students.length === 0) {
+        return {status: 404, message: "No hay estudiantes registrados"};
+    }
+    return {status: 200, data: students};
 }
 
 //Agregar un estudiantes
-function postStudent (req,res) {
-    const student = req.body;
-    students.push(student);
-    res.json(student);
+function postStudent(student) {
+
+    if (!student.name || !student.grade) {
+        return {status: 400, message: "El nombre y la calificación del estudiante son requeridos"};
+    }
+
+    const newStudent = new Student(genID(), student.name, student.grade);
+    students.push(newStudent);
+    return {status: 201, message: "Estudiante agregado correctamente"};
 }
 
 //Obtener estudiante por id
-function getStudentById (req, res) {
-    const id = req.params.id;
-    const student = students.find((student) => student.id === id);
-    res.json(student);
+function getStudentById(id) {
+
+    if (students.length === 0) {
+        return {status: 404, message: "No hay estudiantes registrados"};
+    }
+
+    if (!id) {
+        return {status: 400, message: "El id del estudiante es requerido"};
+    }
+
+    const student = students.find((student) => student.id === parseInt(id));
+    return student ? {status: 200, data: student} : {status: 404, message: "Estudiante no encontrado"};
 }
 
 //Actualizar estudiante por id
-function putStudentById (req, res) {
-    const id = req.params.id;
-    const student = req.body;
-    const index = students.findIndex((student) => student.id === id);
-    students[index] = student;
-    res.json(student);
+function putStudentById(id, newDataStudent) {
+
+    if (students.length === 0) {
+        return {status: 404, message: "No hay estudiantes registrados"};
+    }
+
+    if (!id) {
+        return {status: 400, message: "El id del estudiante es requerido"};
+    }
+
+    const index = students.findIndex((student) => student.id === parseInt(id));
+
+    if (index === -1) {
+        return {status: 404, message: "Estudiante no encontrado"};
+    }
+
+    const student = students[index];
+    student.name = newDataStudent.name;
+    student.grade = newDataStudent.grade;
+    return {status: 200, message: "Estudiante actualizado correctamente"};
 }
 
 //Eliminar estudiante por id
-function deleteStudentById (req, res) {
-    const id = req.params.id;
-    const index = students.findIndex((student) => student.id === id);
+function deleteStudentById(id) {
+    const index = students.findIndex((student) => student.id === parseInt(id));
+
+    if (index === -1) {
+        return {status: 404, message: "Estudiante no encontrado"};
+    }
+
     students.splice(index, 1);
-    res.sendStatus(204);
+    return {status: 200, message: "Estudiante eliminado correctamente"};
 }
 
+function topAverages() {
 
-function topAverages (req, res) {
+    if (students.length === 0) {
+        return {message: "No hay estudiantes registrados"};
+    }
+
     const topStudents = students
-        .filter(student => student.grade) // Ensure the student has a grade
-        .sort((a, b) => b.grade - a.grade) // Sort students by grade in descending order
-        .slice(0, 3); // Get the top 3 students
+        .filter(student => student.grade)
+        .sort((a, b) => b.grade - a.grade)
+        .slice(0, 3);
 
-    res.json(topStudents.map(student => ({
-        id: student.id,
-        name: student.name,
-        grade: student.grade
-    })));
+    return {status: 200, data: topStudents};
 };
+
+function failed() {
+    if (students.length === 0) {
+        return {status: 401, message: "No hay estudiantes registrados"};
+    }
+
+    const failedStudents = students
+        .filter(student => student.grade < 70);
+
+    return {status: 200, data: failedStudents};
+}
 
 module.exports = {
     getStudents,
@@ -78,5 +130,6 @@ module.exports = {
     getStudentById,
     putStudentById,
     deleteStudentById,
-    topAverages
+    topAverages,
+    failed
 }
