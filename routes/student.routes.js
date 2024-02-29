@@ -26,6 +26,7 @@ app.post("/", postStudent);
 app.get("/:id", getStudentById);
 app.put("/:id", putStudentById);
 app.delete("/:id", deleteStudentById);
+app.get('/top-averages', topAverages);
 
 
 // Get all tasks

@@ -16,9 +16,5 @@ const students = [];
 //Mostrar todos los estudiantes
 
 
-app.get("/estudiantes", getStudents);
-app.post("/estudiantes", postStudent);
-app.get("/estudiantes/:id", getStudentById);
-app.put("/estudiantes/:id", putStudentById);
-app.delete("/estudiantes/:id", deleteStudentById);
+
 

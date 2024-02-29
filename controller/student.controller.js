@@ -33,3 +33,17 @@ function deleteStudentById (req, res) {
     students.splice(index, 1);
     res.sendStatus(204);
 }
+
+function topAverages (req, res) {
+    const topStudents = students
+        .filter(student => student.grade) // Ensure the student has a grade
+        .sort((a, b) => b.grade - a.grade) // Sort students by grade in descending order
+        .slice(0, 3); // Get the top 3 students
+
+    res.json(topStudents.map(student => ({
+        id: student.id,
+        name: student.name,
+        grade: student.grade
+    })));
+};
+
